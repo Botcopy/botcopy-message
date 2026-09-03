@@ -1,0 +1,1400 @@
+{
+  "type": "OBJECT",
+  "description": "A Botcopy rich reply. Compose the whole reply in one call.",
+  "properties": {
+    "botcopy": {
+      "type": "ARRAY",
+      "description": "The components of this reply, rendered in order.",
+      "minItems": 1,
+      "items": {
+        "type": "OBJECT",
+        "description": "One rendered component. Set one property here, and add another array element for the next component.",
+        "properties": {
+          "text": {
+            "type": "ARRAY",
+            "description": "Plain message bubbles.",
+            "minItems": 1,
+            "items": {
+              "type": "OBJECT",
+              "properties": {
+                "displayText": {
+                  "type": "STRING",
+                  "description": "The text shown in the chat bubble. Always set this."
+                },
+                "ssml": {
+                  "type": "STRING",
+                  "description": "Optional SSML markup for spoken output."
+                },
+                "textToSpeech": {
+                  "type": "STRING",
+                  "description": "Optional phrase spoken aloud. Takes priority over ssml."
+                }
+              },
+              "description": "A single message bubble."
+            }
+          },
+          "suggestions": {
+            "type": "ARRAY",
+            "description": "Quick-reply chips shown under the reply.",
+            "minItems": 1,
+            "items": {
+              "type": "OBJECT",
+              "properties": {
+                "title": {
+                  "type": "STRING",
+                  "description": "Label shown on the chip."
+                },
+                "action": {
+                  "type": "OBJECT",
+                  "description": "Exactly one of message, link, or location.",
+                  "properties": {
+                    "message": {
+                      "type": "OBJECT",
+                      "properties": {
+                        "command": {
+                          "type": "STRING",
+                          "description": "The training phrase or event name sent to the agent."
+                        },
+                        "type": {
+                          "type": "STRING",
+                          "enum": [
+                            "training",
+                            "event"
+                          ],
+                          "description": "Send \"training\" for a training phrase or \"event\" for an event name."
+                        },
+                        "parameters": {
+                          "type": "OBJECT",
+                          "description": "Optional key and value pairs sent to the agent alongside the command."
+                        }
+                      },
+                      "required": [
+                        "command",
+                        "type"
+                      ],
+                      "description": "Continue the conversation by sending a command back to the agent. Use type \"training\" for a training phrase or \"event\" for an event name."
+                    },
+                    "link": {
+                      "type": "OBJECT",
+                      "properties": {
+                        "target": {
+                          "type": "STRING",
+                          "enum": [
+                            "_blank",
+                            "_self",
+                            "_parent",
+                            "_top"
+                          ],
+                          "description": "Where to open the link. Omit this to open it in the Botcopy webview."
+                        },
+                        "url": {
+                          "type": "STRING",
+                          "description": "Destination URL."
+                        },
+                        "parameters": {
+                          "type": "OBJECT",
+                          "description": "Optional key and value pairs appended to the link."
+                        }
+                      },
+                      "required": [
+                        "url"
+                      ],
+                      "description": "Open a URL. Omit target to open it in the Botcopy webview."
+                    },
+                    "location": {
+                      "type": "OBJECT",
+                      "properties": {
+                        "success": {
+                          "type": "OBJECT",
+                          "properties": {
+                            "action": {
+                              "type": "OBJECT",
+                              "properties": {
+                                "message": {
+                                  "type": "OBJECT",
+                                  "properties": {
+                                    "command": {
+                                      "type": "STRING"
+                                    },
+                                    "type": {
+                                      "type": "STRING",
+                                      "enum": [
+                                        "training",
+                                        "event"
+                                      ]
+                                    },
+                                    "parameters": {
+                                      "type": "OBJECT"
+                                    }
+                                  },
+                                  "required": [
+                                    "command",
+                                    "type"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "message"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "action"
+                          ],
+                          "description": "The action taken once the user shares their location."
+                        },
+                        "error": {
+                          "type": "OBJECT",
+                          "properties": {
+                            "action": {
+                              "type": "OBJECT",
+                              "properties": {
+                                "message": {
+                                  "type": "OBJECT",
+                                  "properties": {
+                                    "command": {
+                                      "type": "STRING"
+                                    },
+                                    "type": {
+                                      "type": "STRING",
+                                      "enum": [
+                                        "training",
+                                        "event"
+                                      ]
+                                    },
+                                    "parameters": {
+                                      "type": "OBJECT"
+                                    }
+                                  },
+                                  "required": [
+                                    "command",
+                                    "type"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "message"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "action"
+                          ],
+                          "description": "The action taken if the user declines or the lookup fails."
+                        },
+                        "parameter": {
+                          "type": "STRING",
+                          "description": "Variable name that receives the location result."
+                        },
+                        "errorCode": {
+                          "type": "OBJECT",
+                          "properties": {
+                            "parameter": {
+                              "type": "STRING"
+                            }
+                          },
+                          "required": [
+                            "parameter"
+                          ],
+                          "description": "Variable name that receives the error code."
+                        },
+                        "latitude": {
+                          "type": "OBJECT",
+                          "properties": {
+                            "parameter": {
+                              "type": "STRING"
+                            }
+                          },
+                          "required": [
+                            "parameter"
+                          ],
+                          "description": "Variable name that receives the latitude."
+                        },
+                        "longitude": {
+                          "type": "OBJECT",
+                          "properties": {
+                            "parameter": {
+                              "type": "STRING"
+                            }
+                          },
+                          "required": [
+                            "parameter"
+                          ],
+                          "description": "Variable name that receives the longitude."
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "error",
+                        "parameter"
+                      ],
+                      "description": "Ask the user to share their location, then continue with the success or error message action."
+                    }
+                  }
+                }
+              },
+              "required": [
+                "title",
+                "action"
+              ],
+              "description": "A quick-reply chip."
+            }
+          },
+          "card": {
+            "type": "OBJECT",
+            "properties": {
+              "title": {
+                "type": "STRING",
+                "description": "Heading shown on the card."
+              },
+              "subtitle": {
+                "type": "STRING",
+                "description": "Secondary line under the title."
+              },
+              "body": {
+                "type": "STRING",
+                "description": "Body text of the card."
+              },
+              "image": {
+                "type": "OBJECT",
+                "properties": {
+                  "url": {
+                    "type": "STRING",
+                    "description": "Image URL."
+                  },
+                  "alt": {
+                    "type": "STRING",
+                    "description": "Alt text for accessibility."
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "description": "Optional image shown with this item."
+              },
+              "action": {
+                "type": "OBJECT",
+                "description": "Buttons for this card. A card action supports buttons only.",
+                "properties": {
+                  "buttons": {
+                    "type": "ARRAY",
+                    "description": "Buttons rendered on this card. Each button carries exactly one action.",
+                    "minItems": 1,
+                    "items": {
+                      "type": "OBJECT",
+                      "description": "A single button.",
+                      "properties": {
+                        "title": {
+                          "type": "STRING",
+                          "description": "Button label."
+                        },
+                        "action": {
+                          "type": "OBJECT",
+                          "description": "Exactly one of message, link, or location.",
+                          "properties": {
+                            "message": {
+                              "type": "OBJECT",
+                              "properties": {
+                                "command": {
+                                  "type": "STRING",
+                                  "description": "The training phrase or event name sent to the agent."
+                                },
+                                "type": {
+                                  "type": "STRING",
+                                  "enum": [
+                                    "training",
+                                    "event"
+                                  ],
+                                  "description": "Send \"training\" for a training phrase or \"event\" for an event name."
+                                },
+                                "parameters": {
+                                  "type": "OBJECT",
+                                  "description": "Optional key and value pairs sent to the agent alongside the command."
+                                }
+                              },
+                              "required": [
+                                "command",
+                                "type"
+                              ],
+                              "description": "Continue the conversation by sending a command back to the agent. Use type \"training\" for a training phrase or \"event\" for an event name."
+                            },
+                            "link": {
+                              "type": "OBJECT",
+                              "properties": {
+                                "target": {
+                                  "type": "STRING",
+                                  "enum": [
+                                    "_blank",
+                                    "_self",
+                                    "_parent",
+                                    "_top"
+                                  ],
+                                  "description": "Where to open the link. Omit this to open it in the Botcopy webview."
+                                },
+                                "url": {
+                                  "type": "STRING",
+                                  "description": "Destination URL."
+                                },
+                                "parameters": {
+                                  "type": "OBJECT",
+                                  "description": "Optional key and value pairs appended to the link."
+                                }
+                              },
+                              "required": [
+                                "url"
+                              ],
+                              "description": "Open a URL. Omit target to open it in the Botcopy webview."
+                            },
+                            "location": {
+                              "type": "OBJECT",
+                              "properties": {
+                                "success": {
+                                  "type": "OBJECT",
+                                  "properties": {
+                                    "action": {
+                                      "type": "OBJECT",
+                                      "properties": {
+                                        "message": {
+                                          "type": "OBJECT",
+                                          "properties": {
+                                            "command": {
+                                              "type": "STRING"
+                                            },
+                                            "type": {
+                                              "type": "STRING",
+                                              "enum": [
+                                                "training",
+                                                "event"
+                                              ]
+                                            },
+                                            "parameters": {
+                                              "type": "OBJECT"
+                                            }
+                                          },
+                                          "required": [
+                                            "command",
+                                            "type"
+                                          ]
+                                        }
+                                      },
+                                      "required": [
+                                        "message"
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "action"
+                                  ],
+                                  "description": "The action taken once the user shares their location."
+                                },
+                                "error": {
+                                  "type": "OBJECT",
+                                  "properties": {
+                                    "action": {
+                                      "type": "OBJECT",
+                                      "properties": {
+                                        "message": {
+                                          "type": "OBJECT",
+                                          "properties": {
+                                            "command": {
+                                              "type": "STRING"
+                                            },
+                                            "type": {
+                                              "type": "STRING",
+                                              "enum": [
+                                                "training",
+                                                "event"
+                                              ]
+                                            },
+                                            "parameters": {
+                                              "type": "OBJECT"
+                                            }
+                                          },
+                                          "required": [
+                                            "command",
+                                            "type"
+                                          ]
+                                        }
+                                      },
+                                      "required": [
+                                        "message"
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "action"
+                                  ],
+                                  "description": "The action taken if the user declines or the lookup fails."
+                                },
+                                "parameter": {
+                                  "type": "STRING",
+                                  "description": "Variable name that receives the location result."
+                                },
+                                "errorCode": {
+                                  "type": "OBJECT",
+                                  "properties": {
+                                    "parameter": {
+                                      "type": "STRING"
+                                    }
+                                  },
+                                  "required": [
+                                    "parameter"
+                                  ],
+                                  "description": "Variable name that receives the error code."
+                                },
+                                "latitude": {
+                                  "type": "OBJECT",
+                                  "properties": {
+                                    "parameter": {
+                                      "type": "STRING"
+                                    }
+                                  },
+                                  "required": [
+                                    "parameter"
+                                  ],
+                                  "description": "Variable name that receives the latitude."
+                                },
+                                "longitude": {
+                                  "type": "OBJECT",
+                                  "properties": {
+                                    "parameter": {
+                                      "type": "STRING"
+                                    }
+                                  },
+                                  "required": [
+                                    "parameter"
+                                  ],
+                                  "description": "Variable name that receives the longitude."
+                                }
+                              },
+                              "required": [
+                                "success",
+                                "error",
+                                "parameter"
+                              ],
+                              "description": "Ask the user to share their location, then continue with the success or error message action."
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "action"
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "description": "A single rich card."
+          },
+          "carousel": {
+            "type": "ARRAY",
+            "description": "A swipeable row of cards.",
+            "minItems": 1,
+            "items": {
+              "type": "OBJECT",
+              "properties": {
+                "title": {
+                  "type": "STRING",
+                  "description": "Heading shown on the card."
+                },
+                "subtitle": {
+                  "type": "STRING",
+                  "description": "Secondary line under the title."
+                },
+                "body": {
+                  "type": "STRING",
+                  "description": "Body text of the card."
+                },
+                "image": {
+                  "type": "OBJECT",
+                  "properties": {
+                    "url": {
+                      "type": "STRING",
+                      "description": "Image URL."
+                    },
+                    "alt": {
+                      "type": "STRING",
+                      "description": "Alt text for accessibility."
+                    }
+                  },
+                  "required": [
+                    "url"
+                  ],
+                  "description": "Optional image shown with this item."
+                },
+                "action": {
+                  "type": "OBJECT",
+                  "description": "Exactly one of message, link, buttons, or location.",
+                  "properties": {
+                    "message": {
+                      "type": "OBJECT",
+                      "properties": {
+                        "command": {
+                          "type": "STRING",
+                          "description": "The training phrase or event name sent to the agent."
+                        },
+                        "type": {
+                          "type": "STRING",
+                          "enum": [
+                            "training",
+                            "event"
+                          ],
+                          "description": "Send \"training\" for a training phrase or \"event\" for an event name."
+                        },
+                        "parameters": {
+                          "type": "OBJECT",
+                          "description": "Optional key and value pairs sent to the agent alongside the command."
+                        }
+                      },
+                      "required": [
+                        "command",
+                        "type"
+                      ],
+                      "description": "Continue the conversation by sending a command back to the agent. Use type \"training\" for a training phrase or \"event\" for an event name."
+                    },
+                    "link": {
+                      "type": "OBJECT",
+                      "properties": {
+                        "target": {
+                          "type": "STRING",
+                          "enum": [
+                            "_blank",
+                            "_self",
+                            "_parent",
+                            "_top"
+                          ],
+                          "description": "Where to open the link. Omit this to open it in the Botcopy webview."
+                        },
+                        "url": {
+                          "type": "STRING",
+                          "description": "Destination URL."
+                        },
+                        "parameters": {
+                          "type": "OBJECT",
+                          "description": "Optional key and value pairs appended to the link."
+                        }
+                      },
+                      "required": [
+                        "url"
+                      ],
+                      "description": "Open a URL. Omit target to open it in the Botcopy webview."
+                    },
+                    "buttons": {
+                      "type": "ARRAY",
+                      "description": "Buttons rendered on this card. Each button carries exactly one action.",
+                      "minItems": 1,
+                      "items": {
+                        "type": "OBJECT",
+                        "description": "A single button.",
+                        "properties": {
+                          "title": {
+                            "type": "STRING",
+                            "description": "Button label."
+                          },
+                          "action": {
+                            "type": "OBJECT",
+                            "description": "Exactly one of message, link, or location.",
+                            "properties": {
+                              "message": {
+                                "type": "OBJECT",
+                                "properties": {
+                                  "command": {
+                                    "type": "STRING",
+                                    "description": "The training phrase or event name sent to the agent."
+                                  },
+                                  "type": {
+                                    "type": "STRING",
+                                    "enum": [
+                                      "training",
+                                      "event"
+                                    ],
+                                    "description": "Send \"training\" for a training phrase or \"event\" for an event name."
+                                  },
+                                  "parameters": {
+                                    "type": "OBJECT",
+                                    "description": "Optional key and value pairs sent to the agent alongside the command."
+                                  }
+                                },
+                                "required": [
+                                  "command",
+                                  "type"
+                                ],
+                                "description": "Continue the conversation by sending a command back to the agent. Use type \"training\" for a training phrase or \"event\" for an event name."
+                              },
+                              "link": {
+                                "type": "OBJECT",
+                                "properties": {
+                                  "target": {
+                                    "type": "STRING",
+                                    "enum": [
+                                      "_blank",
+                                      "_self",
+                                      "_parent",
+                                      "_top"
+                                    ],
+                                    "description": "Where to open the link. Omit this to open it in the Botcopy webview."
+                                  },
+                                  "url": {
+                                    "type": "STRING",
+                                    "description": "Destination URL."
+                                  },
+                                  "parameters": {
+                                    "type": "OBJECT",
+                                    "description": "Optional key and value pairs appended to the link."
+                                  }
+                                },
+                                "required": [
+                                  "url"
+                                ],
+                                "description": "Open a URL. Omit target to open it in the Botcopy webview."
+                              },
+                              "location": {
+                                "type": "OBJECT",
+                                "properties": {
+                                  "success": {
+                                    "type": "OBJECT",
+                                    "properties": {
+                                      "action": {
+                                        "type": "OBJECT",
+                                        "properties": {
+                                          "message": {
+                                            "type": "OBJECT",
+                                            "properties": {
+                                              "command": {
+                                                "type": "STRING"
+                                              },
+                                              "type": {
+                                                "type": "STRING",
+                                                "enum": [
+                                                  "training",
+                                                  "event"
+                                                ]
+                                              },
+                                              "parameters": {
+                                                "type": "OBJECT"
+                                              }
+                                            },
+                                            "required": [
+                                              "command",
+                                              "type"
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "message"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "action"
+                                    ],
+                                    "description": "The action taken once the user shares their location."
+                                  },
+                                  "error": {
+                                    "type": "OBJECT",
+                                    "properties": {
+                                      "action": {
+                                        "type": "OBJECT",
+                                        "properties": {
+                                          "message": {
+                                            "type": "OBJECT",
+                                            "properties": {
+                                              "command": {
+                                                "type": "STRING"
+                                              },
+                                              "type": {
+                                                "type": "STRING",
+                                                "enum": [
+                                                  "training",
+                                                  "event"
+                                                ]
+                                              },
+                                              "parameters": {
+                                                "type": "OBJECT"
+                                              }
+                                            },
+                                            "required": [
+                                              "command",
+                                              "type"
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "message"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "action"
+                                    ],
+                                    "description": "The action taken if the user declines or the lookup fails."
+                                  },
+                                  "parameter": {
+                                    "type": "STRING",
+                                    "description": "Variable name that receives the location result."
+                                  },
+                                  "errorCode": {
+                                    "type": "OBJECT",
+                                    "properties": {
+                                      "parameter": {
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    "required": [
+                                      "parameter"
+                                    ],
+                                    "description": "Variable name that receives the error code."
+                                  },
+                                  "latitude": {
+                                    "type": "OBJECT",
+                                    "properties": {
+                                      "parameter": {
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    "required": [
+                                      "parameter"
+                                    ],
+                                    "description": "Variable name that receives the latitude."
+                                  },
+                                  "longitude": {
+                                    "type": "OBJECT",
+                                    "properties": {
+                                      "parameter": {
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    "required": [
+                                      "parameter"
+                                    ],
+                                    "description": "Variable name that receives the longitude."
+                                  }
+                                },
+                                "required": [
+                                  "success",
+                                  "error",
+                                  "parameter"
+                                ],
+                                "description": "Ask the user to share their location, then continue with the success or error message action."
+                              }
+                            }
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "action"
+                        ]
+                      }
+                    },
+                    "location": {
+                      "type": "OBJECT",
+                      "properties": {
+                        "success": {
+                          "type": "OBJECT",
+                          "properties": {
+                            "action": {
+                              "type": "OBJECT",
+                              "properties": {
+                                "message": {
+                                  "type": "OBJECT",
+                                  "properties": {
+                                    "command": {
+                                      "type": "STRING"
+                                    },
+                                    "type": {
+                                      "type": "STRING",
+                                      "enum": [
+                                        "training",
+                                        "event"
+                                      ]
+                                    },
+                                    "parameters": {
+                                      "type": "OBJECT"
+                                    }
+                                  },
+                                  "required": [
+                                    "command",
+                                    "type"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "message"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "action"
+                          ],
+                          "description": "The action taken once the user shares their location."
+                        },
+                        "error": {
+                          "type": "OBJECT",
+                          "properties": {
+                            "action": {
+                              "type": "OBJECT",
+                              "properties": {
+                                "message": {
+                                  "type": "OBJECT",
+                                  "properties": {
+                                    "command": {
+                                      "type": "STRING"
+                                    },
+                                    "type": {
+                                      "type": "STRING",
+                                      "enum": [
+                                        "training",
+                                        "event"
+                                      ]
+                                    },
+                                    "parameters": {
+                                      "type": "OBJECT"
+                                    }
+                                  },
+                                  "required": [
+                                    "command",
+                                    "type"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "message"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "action"
+                          ],
+                          "description": "The action taken if the user declines or the lookup fails."
+                        },
+                        "parameter": {
+                          "type": "STRING",
+                          "description": "Variable name that receives the location result."
+                        },
+                        "errorCode": {
+                          "type": "OBJECT",
+                          "properties": {
+                            "parameter": {
+                              "type": "STRING"
+                            }
+                          },
+                          "required": [
+                            "parameter"
+                          ],
+                          "description": "Variable name that receives the error code."
+                        },
+                        "latitude": {
+                          "type": "OBJECT",
+                          "properties": {
+                            "parameter": {
+                              "type": "STRING"
+                            }
+                          },
+                          "required": [
+                            "parameter"
+                          ],
+                          "description": "Variable name that receives the latitude."
+                        },
+                        "longitude": {
+                          "type": "OBJECT",
+                          "properties": {
+                            "parameter": {
+                              "type": "STRING"
+                            }
+                          },
+                          "required": [
+                            "parameter"
+                          ],
+                          "description": "Variable name that receives the longitude."
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "error",
+                        "parameter"
+                      ],
+                      "description": "Ask the user to share their location, then continue with the success or error message action."
+                    }
+                  }
+                }
+              },
+              "description": "One card in the carousel."
+            }
+          },
+          "list": {
+            "type": "OBJECT",
+            "properties": {
+              "title": {
+                "type": "STRING",
+                "description": "Optional heading shown above the list."
+              },
+              "items": {
+                "minItems": 1,
+                "type": "ARRAY",
+                "items": {
+                  "type": "OBJECT",
+                  "properties": {
+                    "title": {
+                      "type": "STRING",
+                      "description": "Row heading."
+                    },
+                    "body": {
+                      "type": "STRING",
+                      "description": "Supporting text for the row."
+                    },
+                    "image": {
+                      "type": "OBJECT",
+                      "properties": {
+                        "url": {
+                          "type": "STRING",
+                          "description": "Image URL."
+                        },
+                        "alt": {
+                          "type": "STRING",
+                          "description": "Alt text for accessibility."
+                        }
+                      },
+                      "required": [
+                        "url"
+                      ],
+                      "description": "Optional image shown with this item."
+                    },
+                    "action": {
+                      "type": "OBJECT",
+                      "description": "Exactly one of message, link, or location.",
+                      "properties": {
+                        "message": {
+                          "type": "OBJECT",
+                          "properties": {
+                            "command": {
+                              "type": "STRING",
+                              "description": "The training phrase or event name sent to the agent."
+                            },
+                            "type": {
+                              "type": "STRING",
+                              "enum": [
+                                "training",
+                                "event"
+                              ],
+                              "description": "Send \"training\" for a training phrase or \"event\" for an event name."
+                            },
+                            "parameters": {
+                              "type": "OBJECT",
+                              "description": "Optional key and value pairs sent to the agent alongside the command."
+                            }
+                          },
+                          "required": [
+                            "command",
+                            "type"
+                          ],
+                          "description": "Continue the conversation by sending a command back to the agent. Use type \"training\" for a training phrase or \"event\" for an event name."
+                        },
+                        "link": {
+                          "type": "OBJECT",
+                          "properties": {
+                            "target": {
+                              "type": "STRING",
+                              "enum": [
+                                "_blank",
+                                "_self",
+                                "_parent",
+                                "_top"
+                              ],
+                              "description": "Where to open the link. Omit this to open it in the Botcopy webview."
+                            },
+                            "url": {
+                              "type": "STRING",
+                              "description": "Destination URL."
+                            },
+                            "parameters": {
+                              "type": "OBJECT",
+                              "description": "Optional key and value pairs appended to the link."
+                            }
+                          },
+                          "required": [
+                            "url"
+                          ],
+                          "description": "Open a URL. Omit target to open it in the Botcopy webview."
+                        },
+                        "location": {
+                          "type": "OBJECT",
+                          "properties": {
+                            "success": {
+                              "type": "OBJECT",
+                              "properties": {
+                                "action": {
+                                  "type": "OBJECT",
+                                  "properties": {
+                                    "message": {
+                                      "type": "OBJECT",
+                                      "properties": {
+                                        "command": {
+                                          "type": "STRING"
+                                        },
+                                        "type": {
+                                          "type": "STRING",
+                                          "enum": [
+                                            "training",
+                                            "event"
+                                          ]
+                                        },
+                                        "parameters": {
+                                          "type": "OBJECT"
+                                        }
+                                      },
+                                      "required": [
+                                        "command",
+                                        "type"
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "message"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "action"
+                              ],
+                              "description": "The action taken once the user shares their location."
+                            },
+                            "error": {
+                              "type": "OBJECT",
+                              "properties": {
+                                "action": {
+                                  "type": "OBJECT",
+                                  "properties": {
+                                    "message": {
+                                      "type": "OBJECT",
+                                      "properties": {
+                                        "command": {
+                                          "type": "STRING"
+                                        },
+                                        "type": {
+                                          "type": "STRING",
+                                          "enum": [
+                                            "training",
+                                            "event"
+                                          ]
+                                        },
+                                        "parameters": {
+                                          "type": "OBJECT"
+                                        }
+                                      },
+                                      "required": [
+                                        "command",
+                                        "type"
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "message"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "action"
+                              ],
+                              "description": "The action taken if the user declines or the lookup fails."
+                            },
+                            "parameter": {
+                              "type": "STRING",
+                              "description": "Variable name that receives the location result."
+                            },
+                            "errorCode": {
+                              "type": "OBJECT",
+                              "properties": {
+                                "parameter": {
+                                  "type": "STRING"
+                                }
+                              },
+                              "required": [
+                                "parameter"
+                              ],
+                              "description": "Variable name that receives the error code."
+                            },
+                            "latitude": {
+                              "type": "OBJECT",
+                              "properties": {
+                                "parameter": {
+                                  "type": "STRING"
+                                }
+                              },
+                              "required": [
+                                "parameter"
+                              ],
+                              "description": "Variable name that receives the latitude."
+                            },
+                            "longitude": {
+                              "type": "OBJECT",
+                              "properties": {
+                                "parameter": {
+                                  "type": "STRING"
+                                }
+                              },
+                              "required": [
+                                "parameter"
+                              ],
+                              "description": "Variable name that receives the longitude."
+                            }
+                          },
+                          "required": [
+                            "success",
+                            "error",
+                            "parameter"
+                          ],
+                          "description": "Ask the user to share their location, then continue with the success or error message action."
+                        }
+                      }
+                    }
+                  },
+                  "description": "One row in the list. Rows cannot carry buttons."
+                }
+              }
+            },
+            "required": [
+              "items"
+            ],
+            "description": "A titled, selectable list."
+          },
+          "form": {
+            "type": "OBJECT",
+            "properties": {
+              "title": {
+                "type": "STRING",
+                "description": "Heading shown at the top of the form."
+              },
+              "subtitle": {
+                "type": "STRING",
+                "description": "Secondary line under the title."
+              },
+              "style": {
+                "type": "STRING",
+                "enum": [
+                  "message",
+                  "wall"
+                ],
+                "description": "Display style of the form."
+              },
+              "force": {
+                "type": "BOOLEAN",
+                "description": "Set true to remove the cancel button so the user must complete the form."
+              },
+              "fields": {
+                "minItems": 1,
+                "type": "ARRAY",
+                "items": {
+                  "type": "OBJECT",
+                  "properties": {
+                    "autocomplete": {
+                      "type": "STRING",
+                      "description": "Optional browser autocomplete hint."
+                    },
+                    "checkboxes": {
+                      "minItems": 1,
+                      "type": "ARRAY",
+                      "items": {
+                        "type": "OBJECT",
+                        "properties": {
+                          "checkboxLabel": {
+                            "type": "STRING"
+                          },
+                          "checked": {
+                            "type": "BOOLEAN"
+                          },
+                          "parameter": {
+                            "type": "STRING"
+                          }
+                        },
+                        "required": [
+                          "checkboxLabel",
+                          "parameter"
+                        ]
+                      },
+                      "description": "Options for a checkbox group."
+                    },
+                    "error": {
+                      "type": "STRING",
+                      "description": "Message shown when the field is invalid."
+                    },
+                    "expose": {
+                      "type": "BOOLEAN",
+                      "description": "Whether the value is exposed in the form-submitted browser event."
+                    },
+                    "fieldType": {
+                      "type": "STRING",
+                      "description": "Field element to render, such as text, checkbox, radio, or select."
+                    },
+                    "groupLabel": {
+                      "type": "STRING",
+                      "description": "Label shown above a checkbox, radio, or select group."
+                    },
+                    "helperText": {
+                      "type": "STRING",
+                      "description": "Guidance shown beneath the field."
+                    },
+                    "id": {
+                      "type": "STRING",
+                      "description": "Optional identifier for the field element."
+                    },
+                    "label": {
+                      "type": "STRING",
+                      "description": "Visible label for the field."
+                    },
+                    "maxLength": {
+                      "type": "NUMBER",
+                      "description": "Maximum number of characters allowed."
+                    },
+                    "multiline": {
+                      "type": "BOOLEAN",
+                      "description": "Render the field as a multi-line text area."
+                    },
+                    "name": {
+                      "type": "STRING",
+                      "description": "Optional name attribute for the field element."
+                    },
+                    "parameter": {
+                      "type": "STRING",
+                      "description": "Variable name that receives the value the user enters."
+                    },
+                    "pattern": {
+                      "type": "STRING",
+                      "description": "Regular expression the value must match."
+                    },
+                    "placeholder": {
+                      "type": "STRING",
+                      "description": "Placeholder text shown inside the empty input."
+                    },
+                    "radio": {
+                      "minItems": 1,
+                      "type": "ARRAY",
+                      "items": {
+                        "type": "OBJECT",
+                        "properties": {
+                          "parameter": {
+                            "type": "STRING"
+                          },
+                          "radioLabel": {
+                            "type": "STRING"
+                          },
+                          "selected": {
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        "required": [
+                          "parameter",
+                          "radioLabel"
+                        ]
+                      },
+                      "description": "Options for a single-choice radio group."
+                    },
+                    "required": {
+                      "type": "BOOLEAN",
+                      "description": "Whether the field must be filled before the form can be submitted."
+                    },
+                    "rows": {
+                      "type": "NUMBER",
+                      "description": "Visible rows when multiline is true."
+                    },
+                    "select": {
+                      "minItems": 1,
+                      "type": "ARRAY",
+                      "items": {
+                        "type": "OBJECT",
+                        "properties": {
+                          "parameter": {
+                            "type": "STRING"
+                          },
+                          "selectLabel": {
+                            "type": "STRING"
+                          }
+                        },
+                        "required": [
+                          "parameter",
+                          "selectLabel"
+                        ]
+                      },
+                      "description": "Options for a dropdown."
+                    },
+                    "type": {
+                      "type": "STRING",
+                      "description": "Input type for text-style fields.",
+                      "enum": [
+                        "text",
+                        "email",
+                        "tel",
+                        "number",
+                        "password",
+                        "url",
+                        "date",
+                        "datetime-local",
+                        "month",
+                        "week",
+                        "time",
+                        "color",
+                        "checkbox"
+                      ]
+                    }
+                  },
+                  "description": "A single input in the form."
+                },
+                "description": "The input fields, in the order they are shown."
+              },
+              "action": {
+                "type": "OBJECT",
+                "description": "The message action sent when the form is submitted.",
+                "properties": {
+                  "message": {
+                    "type": "OBJECT",
+                    "properties": {
+                      "command": {
+                        "type": "STRING",
+                        "description": "The training phrase or event name sent to the agent."
+                      },
+                      "type": {
+                        "type": "STRING",
+                        "enum": [
+                          "training",
+                          "event"
+                        ],
+                        "description": "Send \"training\" for a training phrase or \"event\" for an event name."
+                      },
+                      "parameters": {
+                        "type": "OBJECT",
+                        "description": "Optional key and value pairs sent to the agent alongside the command."
+                      }
+                    },
+                    "required": [
+                      "command",
+                      "type"
+                    ],
+                    "description": "Continue the conversation by sending a command back to the agent. Use type \"training\" for a training phrase or \"event\" for an event name."
+                  }
+                },
+                "required": [
+                  "message"
+                ]
+              },
+              "submitted": {
+                "type": "BOOLEAN"
+              },
+              "disabled": {
+                "type": "BOOLEAN"
+              }
+            },
+            "required": [
+              "fields",
+              "action"
+            ],
+            "description": "An inline form. Submitting it sends the message action."
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "botcopy"
+  ]
+}
