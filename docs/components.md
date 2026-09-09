@@ -57,7 +57,7 @@ A single rich card.
 | `subtitle` | string | Optional | Secondary line under the title |
 | `body` | string | Optional | Body text |
 | `image` | object | Optional | `url` **required** inside it, `alt` optional but always worth setting |
-| `action` | object | Optional | `buttons` only. A card action cannot be a `message` or `link` |
+| `action` | object | Optional | `buttons` **required** inside it, and nothing else. A card action cannot be a `message` or `link` |
 
 On a card, the only action type is `buttons`, so anything a card offers the visitor is offered through a button rather than on the card itself.
 

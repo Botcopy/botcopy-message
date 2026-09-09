@@ -483,7 +483,10 @@
                       ]
                     }
                   }
-                }
+                },
+                "required": [
+                  "buttons"
+                ]
               }
             },
             "description": "A single rich card."
@@ -1225,7 +1228,13 @@
                     },
                     "fieldType": {
                       "type": "STRING",
-                      "description": "Field element to render, such as text, checkbox, radio, or select."
+                      "description": "Which control to render.",
+                      "enum": [
+                        "text",
+                        "select",
+                        "radio",
+                        "checkbox"
+                      ]
                     },
                     "groupLabel": {
                       "type": "STRING",
@@ -1338,7 +1347,12 @@
                       ]
                     }
                   },
-                  "description": "A single input in the form."
+                  "description": "A single input in the form.",
+                  "required": [
+                    "fieldType",
+                    "label",
+                    "parameter"
+                  ]
                 },
                 "description": "The input fields, in the order they are shown."
               },

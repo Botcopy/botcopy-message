@@ -9,8 +9,8 @@
 <required_fields>
 - Every text component must set displayText.
 - Every suggestion chip must set a title and an action.
-- Every form field must set fieldType, label, and parameter, and set type as well
-  for text inputs.
+- Every form field must set fieldType to text, select, radio, or checkbox, plus
+  label and parameter, and set type as well for text inputs.
 - Every form must set an action holding a message.
 </required_fields>
 
